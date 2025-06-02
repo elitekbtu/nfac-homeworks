@@ -1,0 +1,482 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  line-height: 1.6;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.app-container.light {
+  --bg-color: #f8f9fa;
+  --text-color: #212529;
+  --primary-color: #4e9af1;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --border-color: #dee2e6;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer shadow */
+  --hover-brightness: 0.95;
+}
+
+.app-container.dark {
+  --bg-color: #1a1a2e; /* Darker bg */
+  --text-color: #e6e6e6;
+  --primary-color: #5d7af1; /* Slightly brighter primary */
+  --secondary-color: #a5a5a5;
+  --success-color: #00b894;
+  --danger-color: #d63031;
+  --card-bg: #232946; /* Slightly different card bg */
+  --input-bg: #1f253d; /* Input bg consistent with card */
+  --border-color: #3b4262; /* Softer border */
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* Darker shadow */
+  --hover-brightness: 1.1;
+}
+
+.app-container {
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding: 2rem; /* Increased padding */
+  max-width: 800px; /* Keep max-width for content readability */
+  margin: 0 auto;
+  transition: background-color 0.3s, color 0.3s;
+  font-family: var(--font-main); /* Ensure main font is applied */
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem; /* Increased margin */
+}
+
+.app-title {
+  font-family: var(--font-accent);
+  font-size: 2.25rem; /* Slightly larger title */
+  color: var(--primary-color);
+  letter-spacing: 0.5px;
+}
+
+.header-controls {
+  display: flex;
+  gap: 1.25rem; /* Increased gap */
+}
+
+/* General Button Styles */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.6rem; /* Increased padding */
+  font-family: var(--font-main);
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.1s ease, filter 0.2s ease;
+  letter-spacing: 0.5px;
+}
+
+button:hover:not(:disabled) {
+  filter: brightness(var(--hover-brightness));
+}
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+
+.theme-toggle {
+  background: transparent;
+  font-size: 1.6rem; /* Larger icon */
+  padding: 0;
+  width: 44px; /* Larger touch target */
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--text-color); /* Ensure icon color matches theme */
+}
+
+.theme-toggle:hover {
+  background-color: rgba(128, 128, 128, 0.15); /* More visible hover */
+}
+
+.start-button {
+  background-color: var(--success-color);
+  color: white;
+  font-size: 1.15rem; /* Slightly larger */
+  padding: 1rem 2.5rem; /* More padding */
+  margin-top: 1.5rem; /* Increased margin */
+}
+
+.start-button:disabled {
+  background-color: var(--secondary-color);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.reset-button, .try-again-button {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.try-again-button {
+  background-color: var(--primary-color);
+}
+
+.input-group {
+  margin-bottom: 1.75rem; /* Increased margin */
+  width: 100%; /* Ensure input groups take full width of their panel */
+}
+
+label {
+  display: block;
+  margin-bottom: 0.6rem; /* Increased margin */
+  font-weight: 600;
+  font-size: 0.95rem; /* Slightly smaller label */
+  color: var(--secondary-color);
+}
+
+.text-input, .select-input {
+  width: 100%;
+  padding: 0.8rem 1.1rem; /* Increased padding */
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-family: var(--font-main);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.text-input:focus, .select-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.2); /* Focus ring */
+}
+
+.custom-duration-input {
+  margin-top: 0.75rem; /* Space between dropdown and custom input */
+}
+
+/* Centering Main Content Panels */
+.app-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center panels horizontally */
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+.setup-panel, .timer-panel, .completion-panel {
+  width: 100%;
+  max-width: 550px; /* Max width for panels */
+  padding: 1.5rem; /* Add some padding inside panels */
+  background-color: var(--card-bg);
+  border-radius: 12px; /* More rounded corners for panels */
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem; /* Space below panels if multiple were stacked */
+}
+
+
+.timer-panel {
+  text-align: center;
+}
+
+.timer-title {
+  font-size: 1.9rem; /* Larger title */
+  margin-bottom: 2.25rem; /* Increased margin */
+  font-family: var(--font-accent);
+}
+
+.time-left {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 2.5rem; /* Larger time display */
+}
+
+.progress-container {
+  width: 100%;
+  height: 22px; /* Slightly thicker */
+  background-color: var(--border-color);
+  border-radius: 11px; /* Match height/2 */
+  margin: 2.25rem 0; /* Increased margin */
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--success-color);
+  transition: width 0.5s linear; /* Smoother transition */
+  border-radius: 11px;
+}
+
+.completion-panel {
+  text-align: center;
+}
+
+.congratulations {
+  font-size: 2.1rem; /* Larger text */
+  color: var(--primary-color);
+  margin-bottom: 1.25rem; /* Increased margin */
+  font-family: var(--font-accent);
+}
+
+.motivational-phrase {
+  font-size: 1.5rem; /* Larger text */
+  font-style: italic;
+  margin: 2.5rem 0; /* Increased margin */
+  color: var(--secondary-color);
+  line-height: 1.7;
+}
+
+.completion-buttons {
+  display: flex;
+  gap: 1.25rem; /* Increased gap */
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.achievements-button {
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem; /* Increased gap */
+  padding: 0.7rem 1.4rem; /* Adjust padding */
+}
+
+.achievements-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85); /* Darker overlay */
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem; /* Increased padding */
+  z-index: 1000; /* Ensure it's on top */
+  color: var(--text-color); /* Ensure text is visible in dark theme */
+}
+.achievements-panel .achievements-header {
+  color: var(--text-color); /* Explicitly set text color for header in panel */
+}
+.achievements-panel h3{
+  color: var(--text-color);
+}
+
+
+.achievements-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.25rem; /* Increased margin */
+}
+
+.achievements-header h3 {
+  font-family: var(--font-accent);
+  font-size: 1.8rem;
+}
+
+.close-button {
+  background: transparent;
+  color: var(--text-color);
+  font-size: 2rem;
+  padding: 0.5rem;
+  line-height: 1;
+}
+.close-button:hover {
+  color: var(--danger-color);
+}
+
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Wider items */
+  gap: 1.5rem; /* Increased gap */
+  overflow-y: auto;
+  padding-right: 1rem; /* For scrollbar */
+}
+
+.achievement-badge {
+  padding: 1.25rem; /* Increased padding */
+  border-radius: 10px; /* More rounded */
+  display: flex;
+  gap: 1.25rem; /* Increased gap */
+  align-items: center;
+  background-color: var(--card-bg);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease;
+}
+.achievement-badge:hover {
+  transform: translateY(-3px);
+}
+
+
+.achievement-badge.unlocked {
+  border-left: 5px solid var(--success-color); /* Thicker border */
+}
+
+.achievement-badge.locked {
+  opacity: 0.65; /* Slightly more visible */
+  border-left: 5px solid var(--secondary-color);
+}
+
+.achievement-icon {
+  font-size: 2.25rem; /* Larger icon */
+}
+
+.achievement-info h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+}
+.achievement-info p {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  color: var(--secondary-color);
+}
+.achievement-info .achievement-status {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+
+.achievement-notification {
+  position: fixed;
+  top: 2.5rem; /* Increased distance from top */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--success-color);
+  color: white;
+  padding: 1.25rem 2.25rem; /* Increased padding */
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  z-index: 1001; /* Above achievements panel */
+  animation: slideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), slideOut 0.5s 2.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+  font-family: var(--font-main);
+}
+.achievement-notification h4{
+    margin-bottom: 0.25rem;
+}
+
+
+/* Phrase Management Specifics */
+.phrase-management {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background-color: rgba(128,128,128,0.05); /* Subtle background */
+  border-radius: 8px;
+}
+.phrase-toggle-button {
+  background-color: var(--secondary-color);
+  color: white;
+  margin-bottom: 1rem;
+}
+.phrase-form {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+.phrase-form .text-input {
+  flex-grow: 1;
+}
+.add-phrase-button {
+  background-color: var(--primary-color);
+  color: white;
+  white-space: nowrap; /* Prevent wrapping */
+}
+.custom-phrases h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-color);
+}
+.custom-phrases ul {
+  list-style: none;
+  padding-left: 0;
+}
+.custom-phrases li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.custom-phrases li:last-child {
+  border-bottom: none;
+}
+.remove-phrase-button {
+  background-color: transparent;
+  color: var(--danger-color);
+  padding: 0.25rem 0.5rem;
+  font-size: 1.2rem;
+}
+
+
+@keyframes slideIn {
+  from { transform: translateX(-50%) translateY(-120px); opacity: 0; } /* Further up */
+  to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+  from { transform: translateX(-50%) translateY(0); opacity: 1; }
+  to { transform: translateX(-50%) translateY(-120px); opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 1.5rem; /* Adjusted padding for mobile */
+  }
+  
+  .app-title {
+    font-size: 1.8rem; /* Adjusted for mobile */
+  }
+  
+  .completion-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .achievements-grid {
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 1rem;
+  }
+  .achievements-panel {
+    padding: 1.5rem;
+  }
+  .phrase-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .add-phrase-button {
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+    .app-header {
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    .app-title {
+        text-align: center;
+    }
+    .header-controls {
+        width: 100%;
+        justify-content: space-around;
+    }
+    .time-left {
+        font-size: 2rem;
+    }
+    .motivational-phrase {
+        font-size: 1.3rem;
+    }
+}
