@@ -1,126 +1,70 @@
-# OpenAI Practice Lab
+Transformer Study Buddy 🧠📄
 
-A comprehensive 2-hour hands-on learning experience with OpenAI's Assistant API, featuring structured outputs, RAG with built-in `file_search`, and practical Python implementations.
+Интерактивный помощник, обученный на статье "MathBook", с возможностью отвечать на вопросы, используя встроенное векторное хранилище и file_search.
+📦 Быстрый старт
 
-## Quick Start
+    Установите зависимости:
 
-1. **Clone and setup**:
+pip install -r requirements.txt
 
-   ```bash
-   git clone <your-repo-url>
-   cd openai-practice-lab
-   pip install -r requirements.txt
-   ```
+Сконфигурируйте API:
 
-2. **Configure API access**:
+cp .env.example .env
 
-   ```bash
-   cp .env.example .env
-   # Edit .env with your OPENAI_API_KEY
-   ```
+# Вставьте свой OPENAI_API_KEY в .env
 
-3. **Run the labs**:
-   ```bash
-   python scripts/00_init_assistant.py      # Bootstrap assistant
-   python scripts/01_responses_api.py       # Threads → Runs → streaming
-   python scripts/02_structured_output.py   # JSON-mode + function tools
-   python scripts/03_rag_file_search.py     # End-to-end RAG
-   python scripts/99_cleanup.py            # Clean up resources
-   ```
+Запустите инициализацию ассистента:
 
-## Repository Structure
+    python scripts/init_assistant.py
 
-```
-openai-practice-lab/
+🗂 Структура проекта
+
+transformer-study-buddy/
 │
-├─ README.md              # This file - Quick-start & roadmap
-├─ requirements.txt       # openai>=1.83.0, python-dotenv, pydantic, pytest
-├─ .env.example           # OPENAI_API_KEY, OPENAI_ORG (optional)
+├─ README.md # Этот файл
+├─ requirements.txt # Зависимости: openai, dotenv
+├─ .env.example # Шаблон конфигурации
 │
 ├─ scripts/
-│   ├─ 00_init_assistant.py      # Helper: creates or updates one reusable assistant
-│   ├─ 01_responses_api.py       # Walk-through of Threads → Runs → streaming
-│   ├─ 02_structured_output.py   # JSON-mode + function tools demo
-│   ├─ 03_rag_file_search.py     # End-to-end RAG with `file_search`
-│   └─ 99_cleanup.py            # Delete test threads, files, runs
+│ ├─ init_assistant.py # Создание ассистента + загрузка PDF
+│ ├─ cleanup.py # Очистка: удаление ассистента, файлов и векторного хранилища
 │
-├─ data/                         # Sample PDFs / Markdown to upload
+├─ data/
+│ └─ mathbook.pdf # Загружаемый документ (замените на нужный PDF)
 │
-└─ tests/
-    └─ test_runs.py              # pytest sanity checks (<5 min)
-```
+└─ assistant_info.json # (авто) сохранение ID ассистента и ресурсов
 
-## 2-Hour Learning Roadmap
+⚙️ Что делает ассистент?
 
-| Time    | Action                                                    |
-| ------- | --------------------------------------------------------- |
-| 0-10    | Clone repo, `pip install -r requirements.txt`, set `.env` |
-| 10-30   | Run **00** + **01** (Responses API basics)                |
-| 30-50   | Run **02** (Structured Outputs)                           |
-| 50-80   | Run **03** (file_search RAG)                              |
-| 80-100  | Explore run logs, check `tests/`, tweak prompts           |
-| 100-120 | Read linked docs or extend scripts (e.g., add web search) |
+    Отвечает только на основе прикреплённого PDF
 
-## Lab Modules
+    Всегда указывает номер страницы в ответе
 
-### 00 — Assistant Bootstrap (5 min)
+    Использует возможности RAG (retrieval-augmented generation) через file_search
 
-Creates a reusable assistant with `file_search` capabilities and stores the `ASSISTANT_ID` locally.
+⏱ Учебный маршрут (30 минут)
+Время Этап
+0-5 Установка зависимостей и настройка .env
+5-15 Запуск init_assistant.py
+15-30 Вопросы к ассистенту через Playground
+🧹 Очистка ресурсов
 
-### 01 — Responses API Lab (≈ 20 min)
+Чтобы избежать лишних затрат и квот:
 
-- Create threads and append messages
-- Start runs with polling and streaming
-- Demonstrate tool calls with built-in tools
-- Download output files and log metrics
+python scripts/cleanup.py
 
-### 02 — Structured Output Lab (≈ 20 min)
+🔗 Полезные ссылки
 
-- Guarantee JSON output matching Pydantic models
-- Compare JSON-mode vs function tools with `"strict": True`
-- Parse and validate structured responses
-- Unit testing for reliability
+    OpenAI Assistants API
 
-### 03 — RAG via `file_search` Lab (≈ 30 min)
+    File Search Tool
 
-- Upload documents for knowledge retrieval
-- Attach files to assistant's vector store
-- Query with automatic `file_search` invocation
-- Inspect citations and chunk references
-- Multi-file retrieval demonstration
+    Python SDK
 
-### 99 — Cleanup (1 min)
+📝 Требования
 
-Remove temporary resources to avoid quota bloat.
+    Python 3.8+
 
-## Key External References
+    OpenAI API ключ
 
-- **OpenAI Python SDK v1.83.0**: [GitHub Releases](https://github.com/openai/openai-python/releases)
-- **Responses API Reference**: https://platform.openai.com/docs/api-reference/responses
-- **Structured Output Guide**: https://platform.openai.com/docs/guides/structured-output
-- **File Search Tool**: https://platform.openai.com/docs/tools/file-search
-
-## Testing
-
-Run the test suite to verify everything works:
-
-```bash
-pytest tests/ -v
-```
-
-## Tips
-
-- Keep total file uploads < 100 MB to stay within free quota
-- Each script includes inline documentation links for deeper learning
-- All examples are production-ready and can be extended for real applications
-- Use `python scripts/99_cleanup.py` regularly to manage resources
-
-## Requirements
-
-- Python 3.8+
-- OpenAI API key with sufficient credits
-- Internet connection for API calls
-
----
-
-**Everything can be run with** `python scripts/XX_script_name.py` — no Jupyter needed!
+    PDF-файл для загрузки в data/mathbook.pdf
