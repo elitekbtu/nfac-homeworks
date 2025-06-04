@@ -1,105 +1,79 @@
+#!/usr/bin/env python3
+"""
+99 — Cleanup Script
+
+Удаляет ассистента OpenAI и все загруженные файлы, а также очищает файл .assistant.
+
+Usage: python scripts/99_cleanup.py
+"""
+
 import os
-import json
-from typing import Optional, Dict, Any
+import sys
+from pathlib import Path
 from dotenv import load_dotenv
 from openai import OpenAI
-from openai.types import FileDeleted, VectorStoreDeleted
 
 load_dotenv()
 
-class CleanupManager:
-    """Manages cleanup of OpenAI resources and local files."""
-    
-    def __init__(self):
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-        self.assistant_file = "assistant_info.json"
-        self.notes_file = "exam_notes.json"
-    
-    def load_assistant_info(self) -> Optional[Dict[str, Any]]:
-        """Load assistant info from JSON file if exists."""
-        if not os.path.exists(self.assistant_file):
-            print("📭 No assistant info found. Nothing to clean.")
-            return None
-        
-        try:
-            with open(self.assistant_file, "r") as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"⚠️ Failed to load assistant info: {e}")
-            return None
-    
-    def delete_vector_store(self, vector_id: str) -> bool:
-        """Delete vector store resource."""
-        try:
-            result: VectorStoreDeleted = self.client.beta.vector_stores.delete(vector_id)
-            print(f"✅ Deleted vector store: {vector_id}")
-            return result.deleted
-        except Exception as e:
-            print(f"⚠️ Failed to delete vector store {vector_id}: {e}")
-            return False
-    
-    def delete_file(self, file_id: str) -> bool:
-        """Delete file resource."""
-        try:
-            result: FileDeleted = self.client.files.delete(file_id)
-            print(f"✅ Deleted file: {file_id}")
-            return result.deleted
-        except Exception as e:
-            print(f"⚠️ Failed to delete file {file_id}: {e}")
-            return False
-    
-    def delete_assistant(self, assistant_id: str) -> bool:
-        """Delete assistant resource."""
-        try:
-            result = self.client.beta.assistants.delete(assistant_id)
-            print(f"✅ Deleted assistant: {assistant_id}")
-            return result.deleted
-        except Exception as e:
-            print(f"⚠️ Failed to delete assistant {assistant_id}: {e}")
-            return False
-    
-    def remove_local_file(self, file_path: str) -> bool:
-        """Remove local file."""
-        try:
-            if os.path.exists(file_path):
-                os.remove(file_path)
-                print(f"✅ Removed {file_path}")
-                return True
-            return False
-        except Exception as e:
-            print(f"⚠️ Failed to remove {file_path}: {e}")
-            return False
-    
-    def cleanup(self) -> None:
-        """Perform complete cleanup routine."""
-        print("🧹 Starting cleanup...")
-        
-        assistant_info = self.load_assistant_info()
-        if not assistant_info:
+def get_client():
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        print("❌ Error: OPENAI_API_KEY not found")
+        sys.exit(1)
+    return OpenAI(api_key=api_key)
+
+def load_assistant_id():
+    assistant_file = Path(".assistant")
+    if assistant_file.exists():
+        return assistant_file.read_text().strip()
+    return None
+
+def delete_assistant(client, assistant_id):
+    try:
+        print(f"🗑️ Deleting assistant: {assistant_id}")
+        client.beta.assistants.delete(assistant_id=assistant_id)
+        print("✅ Assistant deleted.")
+    except Exception as e:
+        print(f"⚠️ Failed to delete assistant: {e}")
+
+def delete_all_files(client):
+    try:
+        print("📂 Fetching uploaded files...")
+        files = client.files.list().data
+        if not files:
+            print("ℹ️ No files found.")
             return
-        
-        # Clean up OpenAI resources
-        if "vector_store_id" in assistant_info:
-            self.delete_vector_store(assistant_info["vector_store_id"])
-        
-        if "file_id" in assistant_info:
-            self.delete_file(assistant_info["file_id"])
-        
-        if "id" in assistant_info:
-            self.delete_assistant(assistant_info["id"])
-        
-        # Clean up local files
-        self.remove_local_file(self.assistant_file)
-        self.remove_local_file(self.notes_file)
-        
-        print("🎉 Cleanup completed!")
+        for f in files:
+            print(f"🗑️ Deleting file: {f.id} ({f.filename})")
+            client.files.delete(f.id)
+        print("✅ All files deleted.")
+    except Exception as e:
+        print(f"⚠️ Failed to delete files: {e}")
+
+def remove_local_artifacts():
+    assistant_file = Path(".assistant")
+    if assistant_file.exists():
+        assistant_file.unlink()
+        print("🧹 Removed .assistant file.")
+    else:
+        print("ℹ️ .assistant file not found.")
 
 def main():
-    try:
-        manager = CleanupManager()
-        manager.cleanup()
-    except Exception as e:
-        print(f"❌ Unexpected error during cleanup: {e}")
+    print("\n🧼 Cleanup Script")
+    print("=" * 50)
+
+    client = get_client()
+    assistant_id = load_assistant_id()
+
+    if assistant_id:
+        delete_assistant(client, assistant_id)
+    else:
+        print("ℹ️ No assistant ID found.")
+
+    delete_all_files(client)
+    remove_local_artifacts()
+
+    print("\n✅ Cleanup complete.")
 
 if __name__ == "__main__":
     main()
