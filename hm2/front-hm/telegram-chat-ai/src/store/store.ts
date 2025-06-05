@@ -76,7 +76,7 @@ const defaultPreferences = {
 
 export const useStore = create<Store>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
       toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
       chats: [],
