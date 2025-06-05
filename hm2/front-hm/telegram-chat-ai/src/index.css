@@ -1,0 +1,237 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+}
+
+/* Telegram Color Variables */
+:root {
+  --telegram-bg: #e6ebee;
+  --telegram-bg-dark: #0e1621;
+  --telegram-text: #000000;
+  --telegram-text-dark: #ffffff;
+  --telegram-secondary: #707579;
+  --telegram-secondary-dark: #a8b2bb;
+  --telegram-button: #0088cc;
+  --telegram-button-hover: #0077b3;
+  --telegram-border: #d1d9e0;
+  --telegram-border-dark: #2b5278;
+  --telegram-hover: #f0f2f5;
+  --telegram-hover-dark: #17212b;
+  --telegram-sidebar: #f5f5f5;
+  --telegram-sidebar-dark: #18222d;
+  --telegram-chat-bg: #e6ebee;
+  --telegram-chat-bg-dark: #0e1621;
+  --telegram-message-in: #ffffff;
+  --telegram-message-in-dark: #1e2c3a;
+  --telegram-message-out: #e2ffc7;
+  --telegram-message-out-dark: #2b5278;
+  --telegram-message-meta-in: #707579;
+  --telegram-message-meta-in-dark: #a8b2bb;
+  --telegram-message-meta-out: #689f5c;
+  --telegram-message-meta-out-dark: #7fcc7f;
+  --telegram-input: #ffffff;
+  --telegram-input-dark: #17212b;
+  --telegram-placeholder: #a8a8a8;
+  --telegram-placeholder-dark: #5d6a78;
+  --telegram-icon: #708499;
+  --telegram-icon-dark: #708499;
+  --telegram-danger: #ff3b30;
+  --telegram-danger-dark: #ff3b30;
+  --telegram-secondary-bg: #f5f5f5;
+  --telegram-secondary-bg-dark: #17212b;
+}
+
+/* Apply Telegram Colors */
+.bg-telegram-bg {
+  background-color: var(--telegram-bg);
+}
+.dark .bg-telegram-bg-dark {
+  background-color: var(--telegram-bg-dark);
+}
+
+.text-telegram-text {
+  color: var(--telegram-text);
+}
+.dark .text-telegram-text-dark {
+  color: var(--telegram-text-dark);
+}
+
+.text-telegram-secondary {
+  color: var(--telegram-secondary);
+}
+.dark .text-telegram-secondary-dark {
+  color: var(--telegram-secondary-dark);
+}
+
+.bg-telegram-button {
+  background-color: var(--telegram-button);
+}
+.hover\:bg-telegram-button-hover:hover {
+  background-color: var(--telegram-button-hover);
+}
+
+.border-telegram-border {
+  border-color: var(--telegram-border);
+}
+.dark .border-telegram-border-dark {
+  border-color: var(--telegram-border-dark);
+}
+
+.bg-telegram-hover {
+  background-color: var(--telegram-hover);
+}
+.dark .bg-telegram-hover-dark {
+  background-color: var(--telegram-hover-dark);
+}
+
+.bg-telegram-sidebar {
+  background-color: var(--telegram-sidebar);
+}
+.dark .bg-telegram-sidebar-dark {
+  background-color: var(--telegram-sidebar-dark);
+}
+
+.bg-telegram-chat-bg {
+  background-color: var(--telegram-chat-bg);
+}
+.dark .bg-telegram-chat-bg-dark {
+  background-color: var(--telegram-chat-bg-dark);
+}
+
+.bg-telegram-message-in {
+  background-color: var(--telegram-message-in);
+}
+.dark .bg-telegram-message-in-dark {
+  background-color: var(--telegram-message-in-dark);
+}
+
+.bg-telegram-message-out {
+  background-color: var(--telegram-message-out);
+}
+.dark .bg-telegram-message-out-dark {
+  background-color: var(--telegram-message-out-dark);
+}
+
+.text-telegram-message-meta-in {
+  color: var(--telegram-message-meta-in);
+}
+.dark .text-telegram-message-meta-in-dark {
+  color: var(--telegram-message-meta-in-dark);
+}
+
+.text-telegram-message-meta-out {
+  color: var(--telegram-message-meta-out);
+}
+.dark .text-telegram-message-meta-out-dark {
+  color: var(--telegram-message-meta-out-dark);
+}
+
+.bg-telegram-input {
+  background-color: var(--telegram-input);
+}
+.dark .bg-telegram-input-dark {
+  background-color: var(--telegram-input-dark);
+}
+
+.placeholder-telegram-placeholder::placeholder {
+  color: var(--telegram-placeholder);
+}
+.dark .placeholder-telegram-placeholder-dark::placeholder {
+  color: var(--telegram-placeholder-dark);
+}
+
+.text-telegram-icon {
+  color: var(--telegram-icon);
+}
+.dark .text-telegram-icon-dark {
+  color: var(--telegram-icon-dark);
+}
+
+.text-telegram-danger {
+  color: var(--telegram-danger);
+}
+.dark .text-telegram-danger-dark {
+  color: var(--telegram-danger-dark);
+}
+
+.bg-telegram-secondary-bg {
+  background-color: var(--telegram-secondary-bg);
+}
+.dark .bg-telegram-secondary-bg-dark {
+  background-color: var(--telegram-secondary-bg-dark);
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 136, 204, 0.3);
+  border-radius: 3px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 136, 204, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 136, 204, 0.6);
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}

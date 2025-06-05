@@ -1,31 +1,22 @@
-module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        primary: {
-          blue: '#0088cc',
-          light: '#54a9eb',
-          dark: '#006b53'
+        "telegram-button": "#2AABEE",
+      },
+      keyframes: {
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
-        bg: {
-          primary: '#ffffff',
-          secondary: '#f4f4f5'
-        },
-        text: {
-          primary: '#000000',
-          secondary: '#707579'
-        },
-        border: '#e4e4e7',
-        message: {
-          out: '#effdde',
-          in: '#ffffff'
-        }
-      }
+      },
+      animation: {
+        "fade-in": "fade-in 0.3s ease-out forwards",
+      },
     },
   },
   plugins: [],
-}
+};
