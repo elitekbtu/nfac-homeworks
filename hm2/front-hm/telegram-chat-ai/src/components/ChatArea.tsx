@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useStore } from '../store/store';
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
-import { ChatBubbleLeftIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/outline';
+import { ChatBubbleLeftIcon, ChatBubbleLeftEllipsisIcon, BookmarkIcon } from '@heroicons/react/24/outline';
+import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid';
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
@@ -9,7 +10,15 @@ export default function ChatArea() {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { chats, activeChat, addMessage, userProfile } = useStore();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const { 
+    chats, 
+    activeChat, 
+    addMessage, 
+    userProfile,
+    toggleFavoriteMessage,
+  } = useStore();
 
   const activeMessages = chats.find((chat) => chat.id === activeChat)?.messages || [];
   const activeChatName = chats.find((chat) => chat.id === activeChat)?.name;
@@ -65,6 +74,18 @@ export default function ChatArea() {
       });
     } finally {
       setIsLoading(false);
+      inputRef.current?.focus();
+    }
+  };
+
+  const getMessageSize = () => {
+    switch (userProfile?.preferences?.messageSize) {
+      case 'small':
+        return 'text-sm';
+      case 'large':
+        return 'text-lg';
+      default:
+        return 'text-base';
     }
   };
 
@@ -105,7 +126,7 @@ export default function ChatArea() {
             key={index}
             className={`flex ${
               msg.role === 'user' ? 'justify-end' : 'justify-start'
-            } animate-fade-in`}
+            } animate-fade-in group`}
           >
             <div
               className={`max-w-[70%] rounded-2xl p-4 ${
@@ -114,19 +135,33 @@ export default function ChatArea() {
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg'
               }`}
             >
-              <p className="text-[15px] leading-relaxed whitespace-pre-wrap break-words">
-                {msg.content}
-              </p>
-              <div className={`text-xs mt-1 text-right ${
-                msg.role === 'user' 
-                  ? 'text-white/80' 
-                  : 'text-gray-500 dark:text-gray-400'
-              }`}>
-                {new Date(msg.timestamp).toLocaleTimeString([], { 
-                  hour: '2-digit', 
-                  minute: '2-digit' 
-                })}
+              <div className="flex items-start gap-2">
+                <p className={`${getMessageSize()} leading-relaxed whitespace-pre-wrap break-words flex-grow`}>
+                  {msg.content}
+                </p>
+                <button
+                  onClick={() => toggleFavoriteMessage(activeChat, index)}
+                  className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  {msg.isFavorite ? (
+                    <BookmarkIconSolid className="h-4 w-4 text-yellow-500" />
+                  ) : (
+                    <BookmarkIcon className="h-4 w-4 text-gray-400 hover:text-yellow-500" />
+                  )}
+                </button>
               </div>
+              {userProfile?.preferences?.showTimestamps && (
+                <div className={`text-xs mt-1 text-right ${
+                  msg.role === 'user' 
+                    ? 'text-white/80' 
+                    : 'text-gray-500 dark:text-gray-400'
+                }`}>
+                  {new Date(msg.timestamp).toLocaleTimeString([], { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                  })}
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -146,9 +181,10 @@ export default function ChatArea() {
 
       {/* Message Input */}
       <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
-        <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
+        <form ref={formRef} onSubmit={handleSubmit} className="max-w-4xl mx-auto">
           <div className="flex gap-3">
             <input
+              ref={inputRef}
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
